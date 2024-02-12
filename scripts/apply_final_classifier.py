@@ -20,34 +20,15 @@ import pickle
 from classifier_initilaliser import ClassifierInitialiser
 from preprocess.data_transformer import DataTransformer
 import os
+from typing import Dict
 
-if __name__ == '__main__':
-    # Run options
-    run_options_file = sys.argv[1]
-    with open(run_options_file) as json_file:
-        run_options = json.load(json_file) 
-
-    # Run name
-    run_name = run_options["RUN_NAME"]
-    
-    # Get the input variables 
-    input_file = run_options["INPUT_FILE"]
-
-    # The final model
-    input_model = run_options["INPUT_MODEL"]
-
-    # Get the output folder
-    output_file = run_options["OUTPUT_FILE"]
-
-    # Preprocess
-    preprocess_scheme = run_options["PREPROCESS_SCHEME"]
-    preprocess_options = run_options["PREPROCESS_OPTIONS"]
-
-    # if a threshold has been defined, use it
-    try: 
-        threshold = run_options["THRESHOLD"]
-    except:
-        threshold = None
+def apply(run_name: str, 
+          input_file: str, 
+          input_model: str, 
+          output_file: str, 
+          preprocess_scheme: str, 
+          preprocess_options: Dict, 
+          threshold):
 
     # read the data
     print("INFO: Reading the data")
@@ -78,4 +59,33 @@ if __name__ == '__main__':
         print("INFO: Finished")
 
 
+if __name__ == '__main__':
+    # Run options
+    run_options_file = sys.argv[1]
+    with open(run_options_file) as json_file:
+        run_options = json.load(json_file) 
+
+    # Run name
+    run_name = run_options["RUN_NAME"]
+    
+    # Get the input variables 
+    input_file = run_options["INPUT_FILE"]
+
+    # The final model
+    input_model = run_options["INPUT_MODEL"]
+
+    # Get the output folder
+    output_file = run_options["OUTPUT_FILE"]
+
+    # Preprocess
+    preprocess_scheme = run_options["PREPROCESS_SCHEME"]
+    preprocess_options = run_options["PREPROCESS_OPTIONS"]
+
+    # if a threshold has been defined, use it
+    try: 
+        threshold = run_options["THRESHOLD"]
+    except:
+        threshold = None
+
+    apply(run_name, input_file, input_model, output_file, preprocess_scheme, preprocess_options, threshold)
 
