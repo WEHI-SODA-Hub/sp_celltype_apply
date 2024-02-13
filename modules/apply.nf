@@ -10,14 +10,14 @@ process APPLY {
 	publishDir "${params.output_path}", mode: 'copy'
 
 	input:
-	path input_ch
-	path model_ch
-	path options_ch
-	path decoder_ch
-	path images_ch
+	path(input_ch)
+	path(model_ch)
+	path(options_ch)
+	path(decoder_ch)
+	path(images_ch)
 
 	output:
-	path ("*_applied_results.csv"), emit: File
+	path("*_applied_results.csv", type: "file")
 	
 	script:
 	"""
@@ -29,7 +29,7 @@ process APPLY {
 		--options ${options_ch} \\
 		--decoder ${decoder_ch} \\
 		--images-file ${images_ch} \\
-		--output-path ${params.output_path} \\
+		--output-path . \\
 		--threshold ${params.threshold}
 	"""
 }

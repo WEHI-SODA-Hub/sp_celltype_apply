@@ -113,7 +113,7 @@ Duration    : ${workflow.duration}
 Success     : ${workflow.success}
 workDir     : ${workflow.workDir}
 Exit status : ${workflow.exitStatus}
-outDir      : ${params.outDir}
+output_path : ${params.output_path}
 
 =======================================================================================
   """
