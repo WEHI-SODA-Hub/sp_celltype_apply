@@ -53,7 +53,7 @@ def apply(
     )
 
     # apply the model
-    if threshold and threshold > 0:
+    if threshold:
         print("INFO: Predicting the labels using threshold")
         probs_df = pd.DataFrame(model.predict_proba(X))
         y_pred = probs_df.iloc[:, 1] > threshold
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         help="Path to directory to store output files.",
         required=True,
     )
-    parser.add_argument("--threshold", "-t", help="idk what this does yet", type=float, nargs='?', const=None)
+    parser.add_argument("--threshold", "-t", help="idk what this does yet", type=float)
 
     args, unknown_args = parser.parse_known_args()
 

@@ -92,14 +92,16 @@ workflow {
 	} else {
 		
 		// Define input channels 
+		script_ch = Channel.fromPath("${projectDir}/scripts/apply_final_classifier.py")
 		input_ch = Channel.fromPath("${params.input}")
 		model_ch = Channel.fromPath("${params.model}")
 		options_ch = Channel.fromPath("${params.options_file}")
 		decoder_ch = Channel.fromPath("${params.decoder_file}")
 		images_ch = Channel.fromPath("${params.images_list}")
+		threshold_ch = Channel.from("${params.threshold}")
 
 		// Run process 1 example
-		output_ch = APPLY(input_ch, model_ch, options_ch, decoder_ch, images_ch)
+		output_ch = APPLY(script_ch, input_ch, model_ch, options_ch, decoder_ch, images_ch, threshold_ch)
 	}
 }
 
