@@ -8,6 +8,7 @@ process APPLY {
 	memory "8 GB"
 	conda "${projectDir}/envs/environment.yml"
 	publishDir "${params.output_path}", mode: 'copy'
+	label "apply"
 
 	input:
 	path(apply_script_ch)
