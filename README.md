@@ -19,7 +19,7 @@ Parameters:
   Usage:  nextflow run main.nf 
         --input <preprocessed-data.csv>
 		--run_name <name>
-		--model <bayes-cv-model.sav>
+		--model <final_model.json>
 		--preprocess_scheme <scheme>
 		--options_toml <preprocess-options.toml>
 		--decoder_file <decoder.json>
@@ -31,7 +31,7 @@ Parameters:
 
   --input			   Preprocessed input data file from QuPath.
   --run_name 		   Run name used to label output files.
-  --model              Final model saved from training.
+  --model              Final model saved from training (either in JSON or Pickle).
   --preprocess_scheme  The scheme used to preprocess the model before application.
   --decoder_file       JSON file containing the decoder for the predicted cell types.
   --output_path        Path to directory to store output files.

@@ -9,6 +9,7 @@ from preprocess.data_transformer import DataTransformer
 import os
 from typing import Dict
 import json
+import xgboost as xgb
 
 
 def apply(
@@ -44,7 +45,12 @@ def apply(
 
     # Read in the model
     print("INFO: Load the model")
-    model = pickle.load(open(input_model, "rb"))
+    # assume *.json are models and everything else is a pickle
+    if os.path.splitext(input_model)[1] == ".json":
+        model = xgb.XGBClassifier()
+        model.load_model(input_model)
+    else:
+        model = pickle.load(open(input_model, "rb"))
 
     # Preprocess
     print("INFO: Preprocessing")
