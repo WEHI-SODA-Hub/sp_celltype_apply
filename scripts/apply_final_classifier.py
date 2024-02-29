@@ -10,6 +10,7 @@ import os
 from typing import Dict
 import json
 
+
 def apply(
     input_file: str,
     input_model: str,
@@ -80,10 +81,13 @@ def apply(
 
         print("INFO: Converting predicted to QuPath-compatible format")
         final_labels = images_coordinates.copy()
-        final_labels.loc[:, "Prediction Level 1"] = y_pred.iloc[:, 0].astype("str").replace(decoder)
+        final_labels.loc[:, "Prediction Level 1"] = (
+            y_pred.iloc[:, 0].astype("str").replace(decoder)
+        )
         final_labels.to_csv(output_file)
 
         print("INFO: Finished")
+
 
 if __name__ == "__main__":
     import argparse, toml
@@ -115,7 +119,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--options",
         "-x",
-        help="Path to TOML file containing preprocessing scheme options."
+        help="Path to TOML file containing preprocessing scheme options.",
     )
     parser.add_argument(
         "--decoder",
