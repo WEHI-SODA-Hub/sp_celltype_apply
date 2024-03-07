@@ -49,23 +49,23 @@ def apply(
     # get the columns of the validation csv
     cols_val = pd.read_csv(validation_file, nrows=0).columns
     cols_in = X.columns
-    # check whether they share the same columns
-    # assumes there is no duplication, which I think is a safe assumption if the data is processed through MIBI-preprocess-data
-    if len(cols_in) == len(cols_in.intersection(cols_val)):
-        print("INFO: Input and validation files' columns are in a different order.\n      Input data will be reordered before applying the model.")
-        X = X[cols_val] # ensures that input data's columns are in the right order 
-    else:
-        # find which columns don't match
-        cols_in_input = cols_in[~cols_in.isin(cols_val)]
-        cols_in_val = cols_val[~cols_val.isin(cols_in)]
-        print("It looks like the columns in the input file don't match the validation file!\n",
-            tabulate.tabulate({
-                "Columns in Input File, but not in Validation File": cols_in_input, 
-                "Columns in Validation File, but not in Input File": cols_in_val
-            }, headers="keys"),
-            sep='\n'
-        )
-        sys.exit(1)
+    # check whether colums are exactly the same, including same order
+    if not cols_in.equals(cols_val):
+        
+        # check case where they share the same columns, but not the same order
+        if cols_val.isin(cols_in).all():
+            print("INFO: Input and validation files' columns are in a different order, or have extra columns.\n      Only the necessary columns from the input data will be used for the model.")
+            X = X[cols_val] # ensures that input data's columns are in the right order 
+        else:
+            # find which columns don't match
+            cols_in_input = cols_in[~cols_in.isin(cols_val)]
+            cols_in_val = cols_val[~cols_val.isin(cols_in)]
+            raise RuntimeError("It looks like the columns in the input file don't match the validation file!\n\n" + 
+                            tabulate.tabulate({
+                                "Columns in Input File, but not in Validation File": cols_in_input, 
+                                "Columns in Validation File, but not in Input File": cols_in_val
+                            }, headers="keys")
+            )
 
     # Read in the model
     print("INFO: Load the model")
