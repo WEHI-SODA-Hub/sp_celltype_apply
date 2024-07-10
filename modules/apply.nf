@@ -28,7 +28,7 @@ process APPLY {
 	def options = options_ch.name != "NO_FILE" ? "--options ${options_ch}" : ''
 	def threshold = threshold_ch != "" ? "--threshold ${threshold_ch}" : ''
 	"""
-	python3 ${apply_script_ch} \\
+	python3 -B ${apply_script_ch} \\
 		--input input.csv \\
 		--name ${params.run_name} \\
 		--model ${model_ch} \\
