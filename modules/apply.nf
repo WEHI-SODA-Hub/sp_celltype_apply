@@ -10,6 +10,7 @@ process APPLY {
 	publishDir "${params.output_path}", mode: 'copy'
 	label "apply"
 	time "1h"
+	container "oras://ghcr.io/wehi-researchcomputing/mibi:0.1"
 
 	input:
 	path(apply_script_ch)
