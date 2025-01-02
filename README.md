@@ -74,6 +74,30 @@ optional arguments:
                         idk what this does yet
 ```
 
+### Example Usage
+
+Following on from the examples in the [preprocessing step](https://github.com/BioimageAnalysisCoreWEHI/MIBI-preprocess-data/tree/main?tab=readme-ov-file#example-usage)
+and in the [training step](https://github.com/BioimageAnalysisCoreWEHI/MIBI-train-model/tree/main?tab=readme-ov-file#example-usage), choose a model
+produced by in the training step (look at one of the html reports in the output folder). Make sure to note the path to the model (`<path-to-model>/bayes_cv_model.sav`),
+and the preprocessing scheme used to train that model.
+
+```
+nextflow run main.nf \
+    --run_name test-apply \
+    --model <path-to-model>/bayes_cv_model.sav \
+    --preprocess_scheme <preprocess-scheme> \
+    --decoder_file /tmp/mibi-test-run-output/test_decoder.json \
+    --images_list /tmp/mibi-test-run-output/test_images.csv \
+    --validation_file /tmp/mibi-test-run-output/test_preprocessed_input_data.csv \
+    --output_path /tmp/mibi-test-run-output \
+    --input /tmp/mibi-test-run-output/test_preprocessed_input_data.csv \
+    -profile gpu # use if wehi_gpu profile was used to train the model
+```
+
+In the above example, the input is the output of the preprocessing step, which is also the same as the validation file.
+In real usage, the input would be a new set of data (that has been preprocessed), whereas the validation file would be
+the same preprocessed data used to train the model being used.
+
 ## Pipeline Output
 
 The result of this pipeline is a singular CSV file labelled as `<name>_applied_results.csv` located inside `--output_path`.
