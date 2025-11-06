@@ -41,13 +41,23 @@ def apply(
         FileNotFoundError if any of input_file, input_model are not found.
     """
 
-    # read the data
+    # read the data - auto-detect CSV or Parquet
     print("INFO: Reading the data")
-    X = pd.read_csv(input_file)
+    if input_file.endswith('.parquet'):
+        X = pd.read_parquet(input_file)
+    elif input_file.endswith('.csv'):
+        X = pd.read_csv(input_file)
+    else:
+        raise ValueError(f"Unsupported input file format. Expected .csv or .parquet, got: {input_file}")
 
     print("INFO: Validating input file")
-    # get the columns of the validation csv
-    cols_val = pd.read_csv(validation_file, nrows=0).columns
+    # get the columns of the validation file - auto-detect format
+    if validation_file.endswith('.parquet'):
+        cols_val = pd.read_parquet(validation_file, columns=[]).columns
+    elif validation_file.endswith('.csv'):
+        cols_val = pd.read_csv(validation_file, nrows=0).columns
+    else:
+        raise ValueError(f"Unsupported validation file format. Expected .csv or .parquet, got: {validation_file}")
     cols_in = X.columns
     # check whether colums are exactly the same, including same order
     if not cols_in.equals(cols_val):
@@ -95,12 +105,17 @@ def apply(
         except FileNotFoundError:
             raise FileNotFoundError(f"Could not find decoder file at {decoder_file}.")
 
-        print("INFO: Load the images and coordinate columns CSV file")
+        print("INFO: Load the images and coordinate columns file")
         try:
-            images_coordinates = pd.read_csv(images_file)
+            if images_file.endswith('.parquet'):
+                images_coordinates = pd.read_parquet(images_file)
+            elif images_file.endswith('.csv'):
+                images_coordinates = pd.read_csv(images_file)
+            else:
+                raise ValueError(f"Unsupported images file format. Expected .csv or .parquet, got: {images_file}")
         except FileNotFoundError:
             raise FileNotFoundError(
-                f"Could not find images and coordinate columns CSV at {images_file}."
+                f"Could not find images and coordinate columns file at {images_file}."
             )
 
         print("INFO: Converting predicted to QuPath-compatible format")
@@ -125,7 +140,7 @@ if __name__ == "__main__":
         "--name", "-n", help="Run name used to label output files.", required=True
     )
     parser.add_argument(
-        "--input", "-i", help="Preprocessed input data file from QuPath.", required=True
+        "--input", "-i", help="Preprocessed input data file from QuPath (.csv or .parquet).", required=True
     )
     parser.add_argument(
         "--model",
@@ -154,13 +169,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--images-file",
         "-f",
-        help="Path to images and coordinate columns CSV file. Used when converting predicted results back to QuPath-compatible format.",
+        help="Path to images and coordinate columns file (.csv or .parquet). Used when converting predicted results back to QuPath-compatible format.",
         required=True,
     )
     parser.add_argument(
         "--validation-file",
         "-v",
-        help="Path to preprocessed input data used to train the XGBoost model. This is used to validate the input data.",
+        help="Path to preprocessed input data used to train the XGBoost model (.csv or .parquet). This is used to validate the input data.",
         required=True
     )
     parser.add_argument(

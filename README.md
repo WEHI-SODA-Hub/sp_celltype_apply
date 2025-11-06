@@ -29,12 +29,17 @@ Parameters:
 
   Required Arguments:
 
-  --input			   Preprocessed input data file from QuPath.
+  --input			   Preprocessed input data file from QuPath (.csv or .parquet).
   --run_name 		   Run name used to label output files.
   --model              Final model saved from training.
   --preprocess_scheme  The scheme used to preprocess the model before application.
   --decoder_file       JSON file containing the decoder for the predicted cell types.
+  --images_list        Path to images file (.csv or .parquet) produced during preprocessing.
+  --validation_file    Path to preprocessed data used to train the model (.csv or .parquet).
   --output_path        Path to directory to store output files.
+
+  Note: The pipeline automatically detects whether input files are CSV or Parquet format.
+        Output results are always saved as CSV.
 
   Optional Arguments:
 
@@ -57,7 +62,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --name NAME, -n NAME  Run name used to label output files.
   --input INPUT, -i INPUT
-                        Preprocessed input data file from QuPath.
+                        Preprocessed input data file from QuPath (.csv or .parquet).
   --model MODEL, -m MODEL
                         Path to final model file produced from training.
   --preprocess-scheme {null,logp1,poly}, -s {null,logp1,poly}
@@ -67,11 +72,16 @@ optional arguments:
   --decoder DECODER, -d DECODER
                         Path to decoder JSON file. Used to match predicted values to their cell names
   --images-file IMAGES_FILE, -f IMAGES_FILE
-                        Path to images and coordinate columns CSV file. Used when converting predicted results back to QuPath-compatible format.
+                        Path to images and coordinate columns file (.csv or .parquet). Used when converting predicted results back to QuPath-compatible format.
+  --validation-file VALIDATION_FILE, -v VALIDATION_FILE
+                        Path to preprocessed input data used to train the XGBoost model (.csv or .parquet). This is used to validate the input data.
   --output-path OUTPUT_PATH, -o OUTPUT_PATH
                         Path to directory to store output files.
   --threshold THRESHOLD, -t THRESHOLD
                         idk what this does yet
+
+Note: The script automatically detects input file format (.csv or .parquet) by extension.
+      Output results are always saved as CSV for QuPath compatibility.
 ```
 
 ### Example Usage
@@ -82,6 +92,7 @@ produced by in the training step (look at one of the html reports in the output 
 and the preprocessing scheme used to train that model.
 
 ```
+# Using CSV input (default preprocessing output)
 nextflow run main.nf \
     --run_name test-apply \
     --model <path-to-model>/bayes_cv_model.sav \
@@ -92,15 +103,29 @@ nextflow run main.nf \
     --output_path /tmp/mibi-test-run-output \
     --input /tmp/mibi-test-run-output/test_preprocessed_input_data.csv \
     -profile gpu # use if wehi_gpu profile was used to train the model
+
+# Using Parquet input (if preprocessing output was in Parquet format)
+nextflow run main.nf \
+    --run_name test-apply-parquet \
+    --model <path-to-model>/bayes_cv_model.sav \
+    --preprocess_scheme <preprocess-scheme> \
+    --decoder_file /tmp/mibi-test-run-output/test_decoder.json \
+    --images_list /tmp/mibi-test-run-output/test_images.parquet \
+    --validation_file /tmp/mibi-test-run-output/test_preprocessed_input_data.parquet \
+    --output_path /tmp/mibi-test-run-output \
+    --input /tmp/mibi-test-run-output/test_preprocessed_input_data.parquet \
+    -profile gpu
 ```
 
 In the above example, the input is the output of the preprocessing step, which is also the same as the validation file.
 In real usage, the input would be a new set of data (that has been preprocessed), whereas the validation file would be
 the same preprocessed data used to train the model being used.
 
+**Note:** The pipeline automatically detects the input file format based on the file extension (`.csv` or `.parquet`). Parquet input files provide faster loading times for large datasets. Output results are always saved as CSV for compatibility with QuPath.
+
 ## Pipeline Output
 
-The result of this pipeline is a singular CSV file labelled as `<name>_applied_results.csv` located inside `--output_path`.
+The result of this pipeline is a singular CSV file labelled as `<name>_applied_results.csv` located inside `--output_path`. The output is always in CSV format for compatibility with QuPath, regardless of input file format.
 
 ## Credits 
 
