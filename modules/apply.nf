@@ -6,7 +6,6 @@ nextflow.enable.dsl=2
 process APPLY {	
 	cpus 1
 	memory "${params.memory}"
-	conda "${projectDir}/envs/environment.yml"
 	publishDir "${params.output_path}", mode: 'copy'
 	label "apply"
 	time "1h"
