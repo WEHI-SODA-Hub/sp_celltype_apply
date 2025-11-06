@@ -1,7 +1,7 @@
-# MIBI Apply Model Pipeline
+# SODA-Classify-Apply-Model Pipeline
 
-This Nextflow pipeline is a sub-pipeline in the MIBI suite. It is used to apply a trained XGBoost
-model on preprocessed QuPath data that the model hasn't been trained on.
+This Nextflow pipeline is a sub-pipeline in the SODA-Classify suite for Spatial Proteomics. It is used to apply a trained XGBoost
+model on preprocessed QuPath data or cell marker measurements in tabular format that the model hasn't been trained on.
 
 ## Introduction
 
@@ -10,8 +10,7 @@ feeds preprocessed QuPath data through an already trained XGBoost model.
 
 ## Usage
 
-Note that this pipeline expects the input data to already have been preprocessed with the MIBI 
-Preprocess Data pipeline.
+Note that this pipeline expects the input data to already have been preprocessed with the SODA-Classify-Preprocess-Data pipeline.
 
 Parameters: 
 
