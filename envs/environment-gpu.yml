@@ -4,6 +4,7 @@ channels:
 - nvidia
 - conda-forge
 dependencies:
+- python=3.9
 - py-xgboost=1.7.4
 - scikit-learn=1.1.1
 - scikit-optimize=0.9.0
