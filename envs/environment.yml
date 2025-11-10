@@ -2,7 +2,6 @@ name: xgboost-cell-classification
 channels:
 - conda-forge
 dependencies:
-- python=3.9
 - xgboost=1.6.2
 - scikit-learn=1.1.1
 - scikit-optimize=0.9.0
@@ -13,6 +12,8 @@ dependencies:
 - numpy<1.20
 - quarto
 - tabulate
+- matplotlib=3.5.3
+- seaborn=0.11.2
+- jinja2
 - scipy<1.13.0
 - pyarrow
-- toml
