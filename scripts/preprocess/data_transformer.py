@@ -37,7 +37,7 @@ class DataTransformer:
         print()
         df = pd.DataFrame(FunctionTransformer(np.log1p).fit_transform(X))
         df.columns = "Logp1 Transformer: " + X.columns
-        return X
+        return df
 
     def polyfeatures_transform(self, X: pd.DataFrame, args: Dict) -> pd.DataFrame:
         """
