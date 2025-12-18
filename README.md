@@ -1,6 +1,6 @@
-# SODA-Classify-Apply-Model Pipeline
+# Spatial Proteomics Celltype pipeline
 
-This Nextflow pipeline is a sub-pipeline in the SODA-Classify suite for Spatial Proteomics. It is used to apply a trained XGBoost
+This Nextflow pipeline is a sub-pipeline in the Spatial Proteomics Celltype suite. It is used to apply a trained XGBoost
 model on preprocessed QuPath data or cell marker measurements in tabular format that the model hasn't been trained on.
 
 ## Introduction
@@ -128,7 +128,7 @@ The result of this pipeline is a singular CSV file labelled as `<name>_applied_r
 
 ## Credits 
 
-The core functionality of the MIBI pipeline was developed by Kenta Yotoke (@yokotenka) under the supervision of Claire Marceaux 
+The core functionality of the Spatial Proteomics pipeline was developed by Kenta Yotoke (@yokotenka) under the supervision of Claire Marceaux 
 (@ClaireMarceaux). The pipeline was adapted to Nextflow by Edward Yang (@edoyango) and maintained by Michael Mckay (@mikemcka) and Michael Milton (@multimeric).
 
 ## Citation
